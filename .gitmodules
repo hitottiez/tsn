@@ -1,0 +1,6 @@
+[submodule "vendors/tsn"]
+	path = vendors/tsn
+	url = https://github.com/yjxiong/tsn-pytorch.git
+[submodule "vendors/flow_wrapper"]
+	path = vendors/flow_wrapper
+	url = github:hitottiez/flow-wrapper.git
