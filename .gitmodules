@@ -3,4 +3,4 @@
 	url = https://github.com/yjxiong/tsn-pytorch.git
 [submodule "vendors/flow_wrapper"]
 	path = vendors/flow_wrapper
-	url = github:hitottiez/flow-wrapper.git
+	url = https://github.com/hitottiez/flow-wrapper.git
