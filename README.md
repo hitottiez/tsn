@@ -1,8 +1,8 @@
 # tsn
-This repository includes a modified code of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch) and it can utilize the local and global cropped images.
+This repository includes a modified code of [original tsn-pytorch](https://github.com/yjxiong/tsn-pytorch) and it can utilize the local and global cropped images.
 
 
-## Cloning codes and building a docker image
+## Cloning this repository and building a docker image
 ```
 git clone  --recursive https://github.com/hitottiez/tsn.git
 cd tsn
@@ -79,7 +79,7 @@ python3 -u train.py \
     --snapshot_pref base_resnet101
 ```
 
-## Evaluation of action recognition
+### Evaluation of action recognition
 Evaluate RGB model:
 ```
 cd training_tools
@@ -129,7 +129,8 @@ python3 -u fusion_test.py \
     --save_scores fusion_score.npz
 ```
 
-## Feature extraction of RGB/Flow
+## Feature extraction
+RGB:
 ```
 python tsn_action_recognition.py \
     --img_dir_path /mnt/dataset/okutama_action_dataset/okutama_3840_2160/images \
@@ -138,6 +139,7 @@ python tsn_action_recognition.py \
     --model_info base_resnet101_rgb_model_info.json
 ```
 
+Flow:
 ```
 python tsn_action_recognition.py \
     --img_dir_path /mnt/dataset/okutama_action_dataset/okutama_3840_2160/images \
@@ -146,8 +148,7 @@ python tsn_action_recognition.py \
     --model_info base_resnet101_flow_model_info.json
 ```
 
-## Feature extraction of RGB+Flow
-After making files of RGB and Flow featuers above and run:
+RGB+Flow after making files of RGB and Flow featuers above:
 ```
 python tsn_fusion_maker.py \
     --img_dir_path /mnt/dataset/okutama_action_dataset/okutama_3840_2160/images/ \
