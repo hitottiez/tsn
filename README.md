@@ -2,15 +2,18 @@
 This repository includes a modified code of [original tsn-pytorch](https://github.com/yjxiong/tsn-pytorch) and it can utilize the local and global cropped images.
 
 
-## Cloning this repository and building a docker image
+## Setup
+Clone this repository:
 ```
 git clone  --recursive https://github.com/hitottiez/tsn.git
+```
+
+Build a docker image:
+```
 cd tsn
 docker build -t <tagname> .
 ```
-
-## Runnning a docker container and login
-Run:
+Run docker container:
 ```
 docker run -d -it --name <container_name> \
     --mount type=bind,src=/<path/to/tsn>/,dst=/opt/multi_actrecog/tsn \
