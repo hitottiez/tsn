@@ -1,19 +1,16 @@
 # tsn
+This repository includes modified code of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch) and it can utilize the local and global cropped images.
 
-このリポジトリは、[オリジナル](https://github.com/yjxiong/tsn-pytorch)をベースとし、人物画像と全体画像を使用して学習するソースを含みます。
 
-## クローン＆Dockerビルド
-
+## Cloning codes and building a docker image
 ```
 git clone  --recursive https://github.com/hitottiez/tsn.git
 cd tsn
 docker build -t <tagname> .
 ```
 
-## Docker起動&コンテナログイン&セットアップ
-
-もしデータセットを特定のディレクトリで管理している場合は、以下のようにマウントして下さい。
-
+## Runnning a docker container and login
+Run:
 ```
 docker run -d -it --name <container_name> \
     --mount type=bind,src=/<path/to/tsn>/,dst=/opt/multi_actrecog/tsn \
@@ -21,18 +18,15 @@ docker run -d -it --name <container_name> \
     <image name> /bin/bash
 ```
 
-正常に起動したら、以下のコマンドでログインします。
-
+Login:
 ```
 docker exec -it <container_name> /bin/bash
 ```
 
-## 学習用データセット作成
+## Making dataset
+Put the dataset in the directory which has proper structure (refer [mht-paf](https://github.com/hitottiez/mht-paf)).
 
-以降の作業を行う前に、データセットを決められたディレクトリ構成で設置しておく必要があります。  
-詳細は[mht-paf](https://github.com/hitottiez/mht-paf)を参照して下さい。
-
-学習用データ作成
+Make training dataset:
 ```
 cd training_tools
 python create_labels_for_tsn_train.py \
@@ -41,7 +35,7 @@ python create_labels_for_tsn_train.py \
     --min_range 10
 ```
 
-テスト用データ作成
+Make test dataset:
 ```
 cd training_tools
 python create_labels_for_tsn_train.py \
@@ -49,13 +43,10 @@ python create_labels_for_tsn_train.py \
     --output_dir /mnt/dataset/okutama_action_dataset/okutama_3840_2160/labels_tsn/test \
     --min_range 10
 ```
+`--output_dir` needs to be set in the same directory as `labels`.
 
-`--output_dir`は`labels`と同じディレクトリに設置して下さい。
-
-## Flow画像作成
-
-もしFlowモデルを学習したい場合は、以下のコマンドでRGB画像からFlow画像を生成します。
-
+## Making Flow images
+Make Flow images from RGB images:
 ```
 cd training_tools
 python create_flow_image.py \
@@ -63,10 +54,8 @@ python create_flow_image.py \
     --worker 8
 ```
 
-## 学習
-
-train.py
-
+## Training the primitive action feature extraction model
+Run:
 ```
 cd training_tools
 python3 -u train.py \
@@ -90,11 +79,8 @@ python3 -u train.py \
     --snapshot_pref base_resnet101
 ```
 
-
-## 評価
-
-以下はRGBモデルを評価する例です。
-
+## Evaluation of action recognition
+Example of RGB model:
 ```
 cd training_tools
 python3 -u test.py \
@@ -112,22 +98,20 @@ python3 -u test.py \
     --use_global_img \
     --save_scores rgb_score.npz
 ```
+Set modality and `--use_global_img` as corresponding to the model.
 
-モデルに一致するようにmodality、`--use_global_img`を指定して下さい。
-さもなければ以下のようなエラーが出ます。
-
-RGB, Flowの間違い
+Error: RGB, Flow
 ```
 RuntimeError: While copying the parameter named XXX, whose dimensions in the model are torch.Size([...]) and whose dimensions in the checkpoint are torch.Size([...]).
 ```
 
-`--use_global_img`の間違い
+Error: `--use_global_img`
 ```
 KeyError: 'unexpected key "XXX" in state_dict'
 ```
 
 
-RGB+FLOWの評価をする場合は、`fusion_test.py`を実行します。
+Evaluate RGB+Flow:
 ```
 cd training_tools
 python3 -u fusion_test.py \
@@ -144,11 +128,9 @@ python3 -u fusion_test.py \
     --dropout 0.7 \
     --use_global_img \
     --save_scores fusion_score.npz
-
 ```
 
-# RGB, FLOWの特徴量ファイル
-
+## Feature extraction of RGB/Flow
 ```
 python tsn_action_recognition.py \
     --img_dir_path /mnt/dataset/okutama_action_dataset/okutama_3840_2160/images \
@@ -165,9 +147,8 @@ python tsn_action_recognition.py \
     --model_info base_resnet101_flow_model_info.json
 ```
 
-# RGB + FLOWの特徴量ファイル
-
-RGB, FLOWの特徴量ファイルを作成した後に、以下を実行して下さい。
+# Feature extraction of RGB+Flow
+After making files of RGB and Flow featuers above and run:
 ```
 python tsn_fusion_maker.py \
     --img_dir_path /mnt/dataset/okutama_action_dataset/okutama_3840_2160/images/ \
