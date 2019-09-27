@@ -1,5 +1,5 @@
 # tsn
-This repository includes modified code of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch) and it can utilize the local and global cropped images.
+This repository includes a modified code of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch) and it can utilize the local and global cropped images.
 
 
 ## Cloning codes and building a docker image
@@ -80,7 +80,7 @@ python3 -u train.py \
 ```
 
 ## Evaluation of action recognition
-Example of RGB model:
+Evaluate RGB model:
 ```
 cd training_tools
 python3 -u test.py \
@@ -110,8 +110,7 @@ Error: `--use_global_img`
 KeyError: 'unexpected key "XXX" in state_dict'
 ```
 
-
-Evaluate RGB+Flow:
+Evaluate RGB+Flow model:
 ```
 cd training_tools
 python3 -u fusion_test.py \
@@ -147,7 +146,7 @@ python tsn_action_recognition.py \
     --model_info base_resnet101_flow_model_info.json
 ```
 
-# Feature extraction of RGB+Flow
+## Feature extraction of RGB+Flow
 After making files of RGB and Flow featuers above and run:
 ```
 python tsn_fusion_maker.py \
